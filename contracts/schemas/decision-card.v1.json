@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ofif://schemas/decision-card.v1.json",
+  "title": "DecisionCard v1 (COIN/Stabilization Extension)",
+  "type": "object",
+  "required": ["card_id", "as_of_ts", "situation", "fog_of_war", "constraints", "assumptions", "next_best_actions", "measurement_plan"],
+  "properties": {
+    "card_id": { "type": "string" },
+    "as_of_ts": { "type": "string", "format": "date-time" },
+    "situation": { "type": "string" },
+    "fog_of_war": {
+      "type": "object",
+      "required": ["overall_confidence", "staleness_seconds", "gaps"],
+      "properties": {
+        "overall_confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "staleness_seconds": { "type": "number", "minimum": 0 },
+        "gaps": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "legitimacy_state": {
+      "type": "object",
+      "properties": {
+        "population_state_ref": { "type": "string" },
+        "headline_indicators": { "type": "array", "items": { "$ref": "legitimacy-indicator.v1.json" } }
+      }
+    },
+    "constraints": { "type": "array", "items": { "type": "string" } },
+    "assumptions": { "type": "array", "items": { "type": "string" } },
+    "causal_claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["claim", "confidence"],
+        "properties": {
+          "claim": { "type": "string" },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+          "evidence_refs": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "next_best_actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["channel", "action", "owner_role", "due_by_ts", "expected_effects"],
+        "properties": {
+          "channel": { "type": "string" },
+          "action": { "type": "string" },
+          "owner_role": { "type": "string" },
+          "due_by_ts": { "type": "string", "format": "date-time" },
+          "expected_effects": { "type": "array", "items": { "type": "string" } },
+          "risk_to_legitimacy": { "type": "string" }
+        }
+      }
+    },
+    "measurement_plan": { "$ref": "measurement-plan.v1.json" },
+    "refresh_scouting": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["gap", "task", "refresh_by_ts"],
+        "properties": {
+          "gap": { "type": "string" },
+          "task": { "type": "string" },
+          "refresh_by_ts": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  }
+}

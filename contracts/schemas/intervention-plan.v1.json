@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ofif://schemas/intervention-plan.v1.json",
+  "title": "InterventionPlan v1",
+  "type": "object",
+  "required": ["plan_id", "actions", "time_bounds", "constraints", "assumptions"],
+  "properties": {
+    "plan_id": { "type": "string" },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["channel", "description", "owner_role", "due_by_ts"],
+        "properties": {
+          "channel": { "type": "string", "description": "e.g., governance, security, services, information, economic" },
+          "description": { "type": "string" },
+          "owner_role": { "type": "string" },
+          "due_by_ts": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "time_bounds": {
+      "type": "object",
+      "required": ["start_ts", "end_ts"],
+      "properties": {
+        "start_ts": { "type": "string", "format": "date-time" },
+        "end_ts": { "type": "string", "format": "date-time" }
+      }
+    },
+    "constraints": { "type": "array", "items": { "type": "string" } },
+    "assumptions": { "type": "array", "items": { "type": "string" } }
+  }
+}

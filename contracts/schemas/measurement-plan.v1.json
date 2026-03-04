@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ofif://schemas/measurement-plan.v1.json",
+  "title": "MeasurementPlan v1",
+  "type": "object",
+  "required": ["plan_id", "success_criteria", "signals", "refresh_schedule"],
+  "properties": {
+    "plan_id": { "type": "string" },
+    "success_criteria": { "type": "array", "items": { "type": "string" } },
+    "signals": { "type": "array", "items": { "type": "string" } },
+    "refresh_schedule": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["signal", "refresh_seconds"],
+        "properties": {
+          "signal": { "type": "string" },
+          "refresh_seconds": { "type": "number", "minimum": 0 }
+        }
+      }
+    },
+    "notes": { "type": "string" }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ofif://schemas/legitimacy-indicator.v1.json",
+  "title": "LegitimacyIndicator v1",
+  "type": "object",
+  "required": ["indicator_id", "time_window", "scope", "metric", "value", "confidence"],
+  "properties": {
+    "indicator_id": { "type": "string" },
+    "time_window": {
+      "type": "object",
+      "required": ["start_ts", "end_ts"],
+      "properties": {
+        "start_ts": { "type": "string", "format": "date-time" },
+        "end_ts": { "type": "string", "format": "date-time" }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "required": ["area_id", "population_segment"],
+      "properties": {
+        "area_id": { "type": "string" },
+        "population_segment": { "type": "string", "description": "Aggregate segment label (no individual IDs)" }
+      }
+    },
+    "metric": {
+      "type": "object",
+      "required": ["name", "unit", "denominator"],
+      "properties": {
+        "name": { "type": "string" },
+        "unit": { "type": "string" },
+        "denominator": { "type": "string", "description": "e.g., per_capita, per_household, per_route_mile" }
+      }
+    },
+    "value": { "type": "number" },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "fog_of_war": {
+      "type": "object",
+      "properties": {
+        "staleness_seconds": { "type": "number", "minimum": 0 },
+        "coverage_notes": { "type": "string" },
+        "contradictions": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "sources": { "type": "array", "items": { "type": "string" } },
+        "method": { "type": "string" }
+      }
+    }
+  }
+}
