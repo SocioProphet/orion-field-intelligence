@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ofif://schemas/refresh-cadence.v1.json",
+  "title": "RefreshCadence v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["cadence_id", "as_of_ts", "scope", "policies"],
+  "properties": {
+    "cadence_id": { "type": "string", "minLength": 1 },
+    "as_of_ts": { "type": "string", "format": "date-time" },
+
+    "scope": { "$ref": "#/$defs/scope" },
+
+    "policies": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/policy" }
+    },
+
+    "notes": { "type": "string" }
+  },
+
+  "$defs": {
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope_type", "scope_ref"],
+      "properties": {
+        "scope_type": {
+          "type": "string",
+          "enum": ["entity", "area", "network", "operation", "population_segment", "other"]
+        },
+        "scope_ref": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["ref_type", "ref_id"],
+          "properties": {
+            "ref_type": { "type": "string", "enum": ["internal_id", "uri", "external_id", "other"] },
+            "ref_id": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    },
+
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policy_id", "applies_to", "target_refresh_interval_seconds", "max_staleness_seconds"],
+      "properties": {
+        "policy_id": { "type": "string", "minLength": 1 },
+
+        "applies_to": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "gap_type": {
+              "type": "string",
+              "enum": [
+                "location",
+                "identity",
+                "intent",
+                "capability",
+                "affiliation",
+                "inventory",
+                "communications",
+                "legitimacy",
+                "environment",
+                "logistics",
+                "other"
+              ]
+            },
+            "modality": {
+              "type": "string",
+              "enum": ["visual", "thermal", "audio", "rf", "lidar", "cyber", "human", "open_source", "other"]
+            }
+          },
+          "minProperties": 1
+        },
+
+        "target_refresh_interval_seconds": { "type": "integer", "minimum": 1 },
+        "max_staleness_seconds": { "type": "integer", "minimum": 1 },
+
+        "triggers": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "on_new_contradiction": { "type": "boolean" },
+            "on_link_degraded": { "type": "boolean" },
+            "on_custody_break": { "type": "boolean" },
+            "on_integrity_alarm": { "type": "boolean" }
+          }
+        },
+
+        "degradation_action": {
+          "type": "string",
+          "enum": ["downgrade_confidence", "mark_stale", "suspend_actions", "request_verification"]
+        }
+      }
+    }
+  }
+}

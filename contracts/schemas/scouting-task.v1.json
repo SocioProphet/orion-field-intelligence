@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ofif://schemas/scouting-task.v1.json",
+  "title": "ScoutingTask v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "created_ts",
+    "purpose",
+    "target_scope",
+    "reduces_gap_ids",
+    "latest_finish_ts",
+    "collection_steps",
+    "success_criteria"
+  ],
+  "properties": {
+    "task_id": { "type": "string", "minLength": 1 },
+    "created_ts": { "type": "string", "format": "date-time" },
+
+    "purpose": { "type": "string", "minLength": 1 },
+
+    "target_scope": { "$ref": "#/$defs/scope" },
+
+    "reduces_gap_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+
+    "latest_finish_ts": { "type": "string", "format": "date-time" },
+
+    "priority": { "type": "integer", "minimum": 0 },
+
+    "expected_information_gain": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+
+    "collection_steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/collection_step" }
+    },
+
+    "adversary_considerations": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "spoofing_risk": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "tamper_risk": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "replay_risk": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "jamming_risk": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "mitigations": {
+          "type": "array",
+          "minItems": 0,
+          "items": { "type": "string" }
+        }
+      }
+    },
+
+    "legitimacy_considerations": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "legitimacy_risk": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "community_impact_notes": { "type": "string" },
+        "mitigations": {
+          "type": "array",
+          "minItems": 0,
+          "items": { "type": "string" }
+        }
+      }
+    },
+
+    "success_criteria": { "$ref": "#/$defs/success_criteria" },
+
+    "outputs": {
+      "type": "array",
+      "minItems": 0,
+      "items": { "type": "string" }
+    },
+
+    "notes": { "type": "string" }
+  },
+
+  "$defs": {
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope_type", "scope_ref"],
+      "properties": {
+        "scope_type": {
+          "type": "string",
+          "enum": ["entity", "area", "network", "operation", "population_segment", "other"]
+        },
+        "scope_ref": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["ref_type", "ref_id"],
+          "properties": {
+            "ref_type": { "type": "string", "enum": ["internal_id", "uri", "external_id", "other"] },
+            "ref_id": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    },
+
+    "collection_step": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["step_id", "channel", "action", "duration_seconds"],
+      "properties": {
+        "step_id": { "type": "string", "minLength": 1 },
+
+        "channel": {
+          "type": "string",
+          "enum": ["imagery", "signals", "human", "cyber", "liaison", "logistics", "other"]
+        },
+
+        "action": { "type": "string", "minLength": 1 },
+
+        "duration_seconds": { "type": "integer", "minimum": 1 },
+
+        "start_no_earlier_ts": { "type": "string", "format": "date-time" },
+        "start_no_later_ts": { "type": "string", "format": "date-time" },
+
+        "resource_requirements": {
+          "type": "array",
+          "minItems": 0,
+          "items": { "type": "string" }
+        },
+
+        "data_products": {
+          "type": "array",
+          "minItems": 0,
+          "items": { "type": "string" }
+        }
+      }
+    },
+
+    "success_criteria": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["information_gain_target", "confidence_target"],
+      "properties": {
+        "information_gain_target": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "confidence_target": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "deliverables": {
+          "type": "array",
+          "minItems": 0,
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}

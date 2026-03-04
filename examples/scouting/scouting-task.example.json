@@ -1,0 +1,50 @@
+{
+  "task_id": "scout-0001",
+  "created_ts": "2026-03-04T16:05:00Z",
+  "purpose": "Reduce identity uncertainty and resolve affiliation contradiction without increasing legitimacy risk.",
+  "target_scope": {
+    "scope_type": "area",
+    "scope_ref": { "ref_type": "internal_id", "ref_id": "grid-18S-UJ-228-993" }
+  },
+  "reduces_gap_ids": ["gap-identity-01"],
+  "latest_finish_ts": "2026-03-04T19:30:00Z",
+  "priority": 10,
+  "expected_information_gain": 0.7,
+  "collection_steps": [
+    {
+      "step_id": "s1",
+      "channel": "human",
+      "action": "Liaison-led inquiry with community representatives; avoid coercive posture; collect non-attributable observations.",
+      "duration_seconds": 3600,
+      "resource_requirements": ["liaison_team", "interpreter_if_needed"],
+      "data_products": ["field_note_summary", "community_sentiment_snapshot"]
+    },
+    {
+      "step_id": "s2",
+      "channel": "imagery",
+      "action": "Standoff visual confirmation from non-disruptive vantage; no overflight.",
+      "duration_seconds": 1800,
+      "resource_requirements": ["standoff_sensor"],
+      "data_products": ["annotated_imagery", "entity_shape_features"]
+    }
+  ],
+  "adversary_considerations": {
+    "spoofing_risk": 0.35,
+    "replay_risk": 0.25,
+    "jamming_risk": 0.4,
+    "mitigations": [
+      "cross-check human report with imagery features",
+      "record chain-of-custody for derived products"
+    ]
+  },
+  "legitimacy_considerations": {
+    "legitimacy_risk": 0.2,
+    "community_impact_notes": "Use trusted intermediaries; avoid visible force posture; minimize disruption.",
+    "mitigations": ["liaison-first", "no overflight", "publish community-facing explanation where appropriate"]
+  },
+  "success_criteria": {
+    "information_gain_target": 0.6,
+    "confidence_target": 0.8,
+    "deliverables": ["updated_fog_of_war_state", "evidence_event_ids"]
+  }
+}
