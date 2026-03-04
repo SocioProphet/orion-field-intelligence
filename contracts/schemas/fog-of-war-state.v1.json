@@ -1,0 +1,236 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ofif://schemas/fog-of-war-state.v1.json",
+  "title": "FogOfWarState v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["state_id", "as_of_ts", "scope", "confidence_summary", "gaps"],
+  "properties": {
+    "state_id": { "type": "string", "minLength": 1 },
+    "as_of_ts": { "type": "string", "format": "date-time" },
+
+    "scope": { "$ref": "#/$defs/scope" },
+
+    "confidence_summary": { "$ref": "#/$defs/confidence_summary" },
+
+    "gaps": {
+      "type": "array",
+      "minItems": 0,
+      "items": { "$ref": "#/$defs/knowledge_gap" }
+    },
+
+    "contradictions": {
+      "type": "array",
+      "minItems": 0,
+      "items": { "$ref": "#/$defs/contradiction" }
+    },
+
+    "assumptions": {
+      "type": "array",
+      "minItems": 0,
+      "items": { "type": "string" }
+    },
+
+    "integrity_risk": { "$ref": "#/$defs/integrity_risk" },
+
+    "notes": { "type": "string" }
+  },
+
+  "$defs": {
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope_type", "scope_ref"],
+      "properties": {
+        "scope_type": {
+          "type": "string",
+          "enum": ["entity", "area", "network", "operation", "population_segment", "other"]
+        },
+        "scope_ref": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["ref_type", "ref_id"],
+          "properties": {
+            "ref_type": { "type": "string", "enum": ["internal_id", "uri", "external_id", "other"] },
+            "ref_id": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    },
+
+    "confidence_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["confidence", "staleness_seconds", "stale_after_seconds", "decay_model"],
+      "properties": {
+        "confidence": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+
+        "confidence_basis": {
+          "type": "array",
+          "minItems": 0,
+          "items": { "type": "string" }
+        },
+
+        "staleness_seconds": { "type": "number", "minimum": 0.0 },
+        "stale_after_seconds": { "type": "number", "minimum": 0.0 },
+
+        "decay_model": { "$ref": "#/$defs/decay_model" },
+
+        "coverage": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "spatial_coverage": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+            "temporal_coverage": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+            "source_diversity": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+            "modality_coverage": {
+              "type": "object",
+              "additionalProperties": { "type": "number", "minimum": 0.0, "maximum": 1.0 }
+            }
+          }
+        }
+      }
+    },
+
+    "decay_model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model", "last_refresh_ts"],
+      "properties": {
+        "model": { "type": "string", "enum": ["exponential_half_life", "linear", "step"] },
+        "last_refresh_ts": { "type": "string", "format": "date-time" },
+
+        "half_life_seconds": { "type": "number", "exclusiveMinimum": 0.0 },
+        "floor_confidence": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+
+        "slope_per_second": { "type": "number" },
+
+        "step_to_confidence": { "type": "number", "minimum": 0.0, "maximum": 1.0 }
+      },
+      "oneOf": [
+        {
+          "properties": { "model": { "const": "exponential_half_life" } },
+          "required": ["half_life_seconds"]
+        },
+        {
+          "properties": { "model": { "const": "linear" } },
+          "required": ["slope_per_second"]
+        },
+        {
+          "properties": { "model": { "const": "step" } },
+          "required": ["step_to_confidence"]
+        }
+      ]
+    },
+
+    "knowledge_gap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gap_id", "gap_type", "description", "criticality", "priority"],
+      "properties": {
+        "gap_id": { "type": "string", "minLength": 1 },
+
+        "gap_type": {
+          "type": "string",
+          "enum": [
+            "location",
+            "identity",
+            "intent",
+            "capability",
+            "affiliation",
+            "inventory",
+            "communications",
+            "legitimacy",
+            "environment",
+            "logistics",
+            "other"
+          ]
+        },
+
+        "description": { "type": "string", "minLength": 1 },
+
+        "criticality": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
+
+        "priority": { "type": "integer", "minimum": 0 },
+
+        "expires_ts": { "type": "string", "format": "date-time" },
+
+        "decision_impact": { "type": "string" },
+
+        "estimated_information_value": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+
+        "recommended_collections": {
+          "type": "array",
+          "minItems": 0,
+          "items": { "$ref": "#/$defs/recommended_collection" }
+        }
+      }
+    },
+
+    "recommended_collection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "expected_information_gain"],
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": ["visual", "thermal", "audio", "rf", "lidar", "cyber", "human", "open_source", "other"]
+        },
+        "constraints": {
+          "type": "array",
+          "minItems": 0,
+          "items": { "type": "string" }
+        },
+        "expected_information_gain": { "type": "number", "minimum": 0.0, "maximum": 1.0 }
+      }
+    },
+
+    "contradiction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contradiction_id", "description", "conflicting_claims"],
+      "properties": {
+        "contradiction_id": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 },
+
+        "conflicting_claims": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "$ref": "#/$defs/claim_ref" }
+        },
+
+        "evidence_event_ids": {
+          "type": "array",
+          "minItems": 0,
+          "items": { "type": "string" }
+        },
+
+        "severity": { "type": "string", "enum": ["low", "medium", "high"] }
+      }
+    },
+
+    "claim_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claim_text", "confidence"],
+      "properties": {
+        "claim_text": { "type": "string", "minLength": 1 },
+        "confidence": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "last_confirmed_ts": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "integrity_risk": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "spoofing_likelihood": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "tamper_likelihood": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "replay_likelihood": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "jamming_likelihood": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "poisoning_likelihood": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

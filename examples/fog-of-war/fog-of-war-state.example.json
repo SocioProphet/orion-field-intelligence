@@ -1,0 +1,74 @@
+{
+  "state_id": "fow-0001",
+  "as_of_ts": "2026-03-04T16:00:00Z",
+  "scope": {
+    "scope_type": "area",
+    "scope_ref": { "ref_type": "internal_id", "ref_id": "grid-18S-UJ-228-993" }
+  },
+  "confidence_summary": {
+    "confidence": 0.62,
+    "confidence_basis": [
+      "two independent modalities agree on movement pattern",
+      "no custody breaks on latest evidence",
+      "comms degradation reduces revisit rate"
+    ],
+    "staleness_seconds": 5400,
+    "stale_after_seconds": 14400,
+    "decay_model": {
+      "model": "exponential_half_life",
+      "last_refresh_ts": "2026-03-04T14:30:00Z",
+      "half_life_seconds": 7200,
+      "floor_confidence": 0.2
+    },
+    "coverage": {
+      "spatial_coverage": 0.55,
+      "temporal_coverage": 0.4,
+      "source_diversity": 0.6,
+      "modality_coverage": { "visual": 0.5, "rf": 0.3, "human": 0.2 }
+    }
+  },
+  "gaps": [
+    {
+      "gap_id": "gap-identity-01",
+      "gap_type": "identity",
+      "description": "Unconfirmed identity/class of primary entity of interest.",
+      "criticality": "high",
+      "priority": 10,
+      "expires_ts": "2026-03-04T20:00:00Z",
+      "decision_impact": "Rules of engagement and engagement thresholds depend on classification.",
+      "estimated_information_value": 0.85,
+      "recommended_collections": [
+        {
+          "method": "visual",
+          "constraints": ["avoid overflight of sensitive locations"],
+          "expected_information_gain": 0.5
+        },
+        {
+          "method": "human",
+          "constraints": ["liaison required; minimize community disruption"],
+          "expected_information_gain": 0.6
+        }
+      ]
+    }
+  ],
+  "contradictions": [
+    {
+      "contradiction_id": "cx-01",
+      "description": "Conflicting reports on affiliation.",
+      "conflicting_claims": [
+        { "claim_text": "Affiliation is Group A", "confidence": 0.55, "last_confirmed_ts": "2026-03-04T13:40:00Z" },
+        { "claim_text": "Affiliation is Group B", "confidence": 0.50, "last_confirmed_ts": "2026-03-04T15:10:00Z" }
+      ],
+      "evidence_event_ids": ["evt-10021", "evt-10088"],
+      "severity": "medium"
+    }
+  ],
+  "integrity_risk": {
+    "spoofing_likelihood": 0.35,
+    "tamper_likelihood": 0.2,
+    "replay_likelihood": 0.25,
+    "jamming_likelihood": 0.4,
+    "poisoning_likelihood": 0.15,
+    "notes": "Recent link instability increases spoofing/replay risk."
+  }
+}

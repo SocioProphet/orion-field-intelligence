@@ -1,0 +1,42 @@
+@prefix ofif: <https://orion.ofif/ontology/> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+ofif:FogOfWarState a rdfs:Class ;
+  rdfs:label "Fog of War State" ;
+  rdfs:comment "A time-stamped uncertainty state over a scope (entity/area/network/operation/etc.)." .
+
+ofif:KnowledgeGap a rdfs:Class ;
+  rdfs:label "Knowledge Gap" ;
+  rdfs:comment "A specific missing/uncertain fact whose resolution materially changes decisions." .
+
+ofif:Contradiction a rdfs:Class ;
+  rdfs:label "Contradiction" ;
+  rdfs:comment "An explicit conflict between two or more claims/evidence sets." .
+
+ofif:hasGap a rdf:Property ;
+  rdfs:domain ofif:FogOfWarState ;
+  rdfs:range  ofif:KnowledgeGap ;
+  rdfs:label "has gap" .
+
+ofif:hasContradiction a rdf:Property ;
+  rdfs:domain ofif:FogOfWarState ;
+  rdfs:range  ofif:Contradiction ;
+  rdfs:label "has contradiction" .
+
+ofif:asOfTime a rdf:Property ;
+  rdfs:domain ofif:FogOfWarState ;
+  rdfs:range  xsd:dateTime ;
+  rdfs:label "as-of time" .
+
+ofif:confidence a rdf:Property ;
+  rdfs:domain ofif:FogOfWarState ;
+  rdfs:range  xsd:decimal ;
+  rdfs:label "confidence" ;
+  rdfs:comment "Normalized 0..1 confidence summary for the scope at as-of time." .
+
+ofif:gapCriticality a rdf:Property ;
+  rdfs:domain ofif:KnowledgeGap ;
+  rdfs:range  xsd:string ;
+  rdfs:label "gap criticality" .
