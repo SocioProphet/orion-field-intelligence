@@ -1,0 +1,14 @@
+@prefix ofif: <https://socioprophet.org/ofif/ontology/> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+
+ofif:ops a owl:Ontology ; rdfs:label "OFIF Operations Module" .
+ofif:Operator a owl:Class ; rdfs:label "Operator" .
+ofif:Team a owl:Class ; rdfs:label "Team" .
+ofif:Mission a owl:Class ; rdfs:label "Mission" .
+ofif:Task a owl:Class ; rdfs:label "Task" .
+ofif:Zone a owl:Class ; rdfs:label "Zone" .
+ofif:Constraint a owl:Class ; rdfs:label "Constraint" .
+ofif:DecisionCard a owl:Class ; rdfs:label "Decision Card" .

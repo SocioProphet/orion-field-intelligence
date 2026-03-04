@@ -1,0 +1,11 @@
+@prefix ofif: <https://socioprophet.org/ofif/ontology/> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+
+ofif:env a owl:Ontology ; rdfs:label "OFIF Environment Module" .
+ofif:WeatherEvent a owl:Class ; rdfs:label "Weather Event" .
+ofif:VisibilityCondition a owl:Class ; rdfs:label "Visibility Condition" .
+ofif:Illumination a owl:Class ; rdfs:label "Illumination" .
+ofif:TerrainFeature a owl:Class ; rdfs:label "Terrain Feature" .

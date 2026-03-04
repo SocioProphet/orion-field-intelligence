@@ -1,0 +1,54 @@
+flowchart LR
+  subgraph Field["Field / Edge"]
+    S[Sensor Nodes<br/>cameras, drones, wearables, phones]
+    CUST[Custody Events<br/>tamper, swap, calibration]
+    NET[Link State<br/>mesh/cellular/sat, outages, QoS]
+  end
+
+  subgraph DataPlane["Cloud / Data Plane"]
+    ING[Ingestion API]
+    VAL[Validation<br/>replay/dedup]
+    ENR[Context Enrichment<br/>weather/terrain/link]
+    EST[Event Store]
+    OBJ[Object Storage]
+  end
+
+  subgraph Intel["Intelligence Plane"]
+    FEAT[Feature Derivation]
+    KG[Knowledge Graph]
+    VEC[Vector Index]
+    REAS[Reasoning Engine]
+    DC[Decision Cards]
+  end
+
+  subgraph Gov["Security / Governance"]
+    POL[Policy Profiles]
+    DET[Anomaly/Drift Detectors]
+    AUD[Audit Log]
+    CTRL[Controls<br/>quotas/rollback/signing]
+  end
+
+  S --> ING
+  S --> NET
+  S --> CUST
+
+  NET --> ENR
+  CUST --> ENR
+
+  POL --> ING
+  ING --> VAL --> ENR --> EST
+  ING --> OBJ
+
+  EST --> FEAT --> KG
+  FEAT --> VEC
+  KG --> REAS
+  VEC --> REAS
+  REAS --> DC
+
+  VAL --> DET
+  ENR --> DET
+  DET --> DC
+  DC --> AUD
+  EST --> AUD
+  CTRL --> ING
+  CTRL --> REAS

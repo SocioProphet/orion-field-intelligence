@@ -1,0 +1,186 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.org/ofif/contracts/event-envelope.v1.json",
+  "title": "OFIF Event Envelope v1",
+  "type": "object",
+  "required": [
+    "envelope_version",
+    "event_type",
+    "event_id",
+    "observed_at",
+    "producer",
+    "payload"
+  ],
+  "properties": {
+    "envelope_version": {
+      "type": "string",
+      "const": "v1"
+    },
+    "event_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_id": {
+      "type": "string",
+      "description": "Opaque unique identifier (UUID recommended)."
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "ingested_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "producer": {
+      "type": "object",
+      "required": [
+        "producer_type",
+        "producer_id"
+      ],
+      "properties": {
+        "producer_type": {
+          "type": "string",
+          "enum": [
+            "sensor",
+            "gateway",
+            "service",
+            "operator"
+          ]
+        },
+        "producer_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "software_version": {
+          "type": "string"
+        },
+        "hardware_model": {
+          "type": "string"
+        },
+        "tenant_id": {
+          "type": "string"
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "source_event_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "derivation": {
+          "type": "string",
+          "enum": [
+            "raw",
+            "enriched",
+            "derived",
+            "aggregated",
+            "inferred"
+          ]
+        },
+        "pipeline_step": {
+          "type": "string"
+        },
+        "model_version_id": {
+          "type": "string"
+        }
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "properties": {
+        "content_hash": {
+          "type": "string",
+          "description": "Hash of payload or referenced media (sha256:...)."
+        },
+        "signature": {
+          "type": "string",
+          "description": "Optional signature over canonicalized envelope."
+        },
+        "attestation": {
+          "type": "string",
+          "description": "Optional hardware attestation blob/ref."
+        },
+        "replay_nonce": {
+          "type": "string"
+        },
+        "sequence_number": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "classification": {
+      "type": "object",
+      "properties": {
+        "data_class": {
+          "type": "string",
+          "enum": [
+            "public",
+            "internal",
+            "restricted",
+            "sensitive"
+          ]
+        },
+        "retention_class": {
+          "type": "string",
+          "enum": [
+            "ephemeral",
+            "short",
+            "standard",
+            "long",
+            "legal_hold"
+          ]
+        },
+        "privacy_class": {
+          "type": "string",
+          "enum": [
+            "none",
+            "operator",
+            "bystander",
+            "mixed",
+            "unknown"
+          ]
+        },
+        "handling_tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "adversarial": {
+      "type": "object",
+      "properties": {
+        "threat_tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "confidence_impact": {
+          "type": "number",
+          "minimum": -1.0,
+          "maximum": 1.0
+        },
+        "detector_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "payload": {
+      "type": "object"
+    }
+  }
+}

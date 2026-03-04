@@ -1,0 +1,12 @@
+@prefix ofif: <https://socioprophet.org/ofif/ontology/> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+
+ofif:comms a owl:Ontology ; rdfs:label "OFIF Communications Module" .
+ofif:Network a owl:Class ; rdfs:label "Network" .
+ofif:Link a owl:Class ; rdfs:label "Link" .
+ofif:QoSProfile a owl:Class ; rdfs:label "QoS Profile" .
+ofif:OutageEvent a owl:Class ; rdfs:label "Outage Event" .
+ofif:InterferenceEvent a owl:Class ; rdfs:label "Interference Event" .

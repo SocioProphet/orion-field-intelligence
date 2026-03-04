@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.org/ofif/contracts/observation-event.v1.json",
+  "title": "ObservationEvent v1",
+  "type": "object",
+  "required": ["sensor_id","location","media","detections"],
+  "properties": {
+    "sensor_id": {"type":"string"},
+    "location": {
+      "type":"object",
+      "required":["h3_cell"],
+      "properties":{
+        "h3_cell":{"type":"string"},
+        "zone_id":{"type":"string"},
+        "property_id":{"type":"string"},
+        "lat":{"type":"number"},
+        "lon":{"type":"number"}
+      }
+    },
+    "environment": {
+      "type":"object",
+      "properties":{
+        "temperature_c":{"type":"number"},
+        "wind_mps":{"type":"number"},
+        "wind_dir_deg":{"type":"number"},
+        "visibility":{"type":"string"},
+        "illumination":{"type":"string"},
+        "season_phase":{"type":"string"}
+      }
+    },
+    "media": {
+      "type":"object",
+      "properties":{
+        "thumbnail_uri":{"type":"string"},
+        "media_uri":{"type":"string"},
+        "media_type":{"type":"string","enum":["image","video","audio","multimodal"]},
+        "duration_s":{"type":"number"},
+        "frame_count":{"type":"integer","minimum":0}
+      }
+    },
+    "detections": {
+      "type":"array",
+      "items":{
+        "type":"object",
+        "required":["entity_class","confidence"],
+        "properties":{
+          "entity_class":{"type":"string","enum":["animal","human","vehicle","drone","equipment","unknown"]},
+          "confidence":{"type":"number","minimum":0.0,"maximum":1.0},
+          "count":{"type":"integer","minimum":1},
+          "bbox":{"type":"array","items":{"type":"number"}, "minItems":4, "maxItems":4},
+          "attributes":{"type":"object"}
+        }
+      }
+    },
+    "link_state": {
+      "type":"object",
+      "properties":{
+        "network_type":{"type":"string","enum":["mesh","cellular","satcom","wifi","lora","unknown"]},
+        "rssi_dbm":{"type":"number"},
+        "latency_ms":{"type":"number"},
+        "packet_loss":{"type":"number","minimum":0.0,"maximum":1.0},
+        "is_partitioned":{"type":"boolean"}
+      }
+    },
+    "custody_state": {
+      "type":"object",
+      "properties":{
+        "tamper_flag":{"type":"boolean"},
+        "last_maintenance_at":{"type":"string","format":"date-time"},
+        "calibration_version":{"type":"string"}
+      }
+    }
+  }
+}

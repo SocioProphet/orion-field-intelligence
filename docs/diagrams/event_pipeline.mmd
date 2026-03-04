@@ -1,0 +1,10 @@
+flowchart LR
+  A[Raw Observation] --> B[Event Envelope]
+  B --> C[Integrity Checks<br/>sign/replay/dedup]
+  C --> D[Context Enrichment<br/>env/terrain/link/custody]
+  D --> E[Event Store]
+  E --> F[Derivation Events<br/>features/tracks]
+  F --> G[Graph + Vector Index]
+  G --> H[Reasoning + Constraints]
+  H --> I[Decision Card]
+  I --> J[Audit + Telemetry]

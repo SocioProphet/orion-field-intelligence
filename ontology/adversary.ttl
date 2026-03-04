@@ -1,0 +1,38 @@
+@prefix ofif: <https://socioprophet.org/ofif/ontology/> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+
+ofif:adversary a owl:Ontology ;
+  rdfs:label "OFIF Adversary & Controls Module" .
+
+ofif:Adversary a owl:Class ; rdfs:label "Adversary" .
+ofif:Capability a owl:Class ; rdfs:label "Capability" .
+ofif:Attack a owl:Class ; rdfs:label "Attack" .
+ofif:Indicator a owl:Class ; rdfs:label "Indicator" .
+ofif:Control a owl:Class ; rdfs:label "Control" .
+ofif:Vulnerability a owl:Class ; rdfs:label "Vulnerability" .
+ofif:Incident a owl:Class ; rdfs:label "Incident" .
+
+ofif:SpoofingAttack a owl:Class ; rdfs:subClassOf ofif:Attack ; rdfs:label "Spoofing Attack" .
+ofif:ReplayAttack a owl:Class ; rdfs:subClassOf ofif:Attack ; rdfs:label "Replay Attack" .
+ofif:TamperAttack a owl:Class ; rdfs:subClassOf ofif:Attack ; rdfs:label "Physical Tamper" .
+ofif:JammingAttack a owl:Class ; rdfs:subClassOf ofif:Attack ; rdfs:label "Jamming / Interference" .
+ofif:PoisoningAttack a owl:Class ; rdfs:subClassOf ofif:Attack ; rdfs:label "Data / Model Poisoning" .
+ofif:CredentialCompromise a owl:Class ; rdfs:subClassOf ofif:Attack ; rdfs:label "Credential Compromise" .
+ofif:FirmwareCompromise a owl:Class ; rdfs:subClassOf ofif:Attack ; rdfs:label "Firmware Compromise" .
+
+ofif:EventSigning a owl:Class ; rdfs:subClassOf ofif:Control ; rdfs:label "Event Signing" .
+ofif:Attestation a owl:Class ; rdfs:subClassOf ofif:Control ; rdfs:label "Hardware Attestation" .
+ofif:ReplayDetection a owl:Class ; rdfs:subClassOf ofif:Control ; rdfs:label "Replay Detection" .
+ofif:QuotaEnforcement a owl:Class ; rdfs:subClassOf ofif:Control ; rdfs:label "Quota Enforcement" .
+ofif:LineageGovernance a owl:Class ; rdfs:subClassOf ofif:Control ; rdfs:label "Lineage Governance" .
+ofif:AccessControl a owl:Class ; rdfs:subClassOf ofif:Control ; rdfs:label "Access Control" .
+ofif:RollbackControl a owl:Class ; rdfs:subClassOf ofif:Control ; rdfs:label "Rollback / Reversion" .
+
+ofif:hasCapability a owl:ObjectProperty ; rdfs:domain ofif:Adversary ; rdfs:range ofif:Capability .
+ofif:performsAttack a owl:ObjectProperty ; rdfs:domain ofif:Adversary ; rdfs:range ofif:Attack .
+ofif:hasIndicator a owl:ObjectProperty ; rdfs:domain ofif:Attack ; rdfs:range ofif:Indicator .
+ofif:mitigatedBy a owl:ObjectProperty ; rdfs:domain ofif:Attack ; rdfs:range ofif:Control .
+ofif:exploits a owl:ObjectProperty ; rdfs:domain ofif:Attack ; rdfs:range ofif:Vulnerability .
