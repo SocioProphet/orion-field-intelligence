@@ -1,0 +1,12 @@
+flowchart TD
+  A[Sensors + Reports + Admin Systems + Field Observations] --> B[Signal Fusion]
+  B --> C[Legitimacy & Stability State (Aggregate)]
+  C --> D[Decision Card Engine (NBA + Time Bounds + Constraints)]
+  D --> E[Interventions (Multi-Channel)]
+  E --> F[Population Response + Outcome Signals]
+  F --> G[Measurement + Evaluation]
+  G --> C
+  C --> H[Fog of War: Staleness + Coverage Gaps]
+  H --> D
+  D --> I[Scouting / Refresh Tasks]
+  I --> A
