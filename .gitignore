@@ -1,0 +1,6 @@
+
+# Local archival / scratch (intentionally not committed)
+artifacts/
+
+# macOS
+.DS_Store
