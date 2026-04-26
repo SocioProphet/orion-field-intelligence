@@ -1,0 +1,64 @@
+@prefix ofif: <https://socioprophet.org/ofif/ontology#> .
+@prefix gaia: <https://socioprophet.org/gaia/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix geo: <http://www.opengis.net/ont/geosparql#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<https://socioprophet.org/ofif/ontology/gaia-bindings>
+    a owl:Ontology ;
+    dcterms:title "OFIF to GAIA ontology bindings" ;
+    dcterms:description "Draft ontology bindings connecting OFIF field events to GAIA world-state, evidence, and geospatial concepts." ;
+    owl:versionInfo "v0" .
+
+ofif:ObservationEvent
+    rdfs:subClassOf gaia:EvidenceObservation ;
+    rdfs:comment "OFIF field observation event mapped into GAIA as an evidence-backed observation." .
+
+ofif:EventEnvelope
+    rdfs:subClassOf gaia:EvidenceEnvelope ;
+    rdfs:comment "OFIF event envelope preserving provenance, integrity, classification, adversarial metadata, and payload." .
+
+ofif:Sensor
+    rdfs:subClassOf gaia:FieldAsset .
+
+ofif:Gateway
+    rdfs:subClassOf gaia:FieldAsset .
+
+ofif:Detection
+    rdfs:subClassOf gaia:DetectedEntityObservation .
+
+ofif:LinkState
+    rdfs:subClassOf gaia:CommunicationsAvailabilityObservation .
+
+ofif:CustodyState
+    rdfs:subClassOf gaia:AssetCustodyObservation .
+
+ofif:AdversarialIndicator
+    rdfs:subClassOf gaia:ThreatIndicator .
+
+ofif:ConfidenceImpact
+    rdfs:subClassOf gaia:ConfidenceAdjustment .
+
+ofif:hasH3Cell
+    rdfs:subPropertyOf gaia:hasSpatialIndexCell ;
+    rdfs:comment "H3 cell identifier used as the first shared OFIF/GAIA spatial key." .
+
+ofif:hasObservedAt
+    rdfs:subPropertyOf prov:generatedAtTime .
+
+ofif:hasLocation
+    rdfs:subPropertyOf geo:hasGeometry .
+
+ofif:hasSourceEvent
+    rdfs:subPropertyOf prov:wasDerivedFrom .
+
+ofif:hasModelVersion
+    rdfs:subPropertyOf gaia:hasModelVersion .
+
+ofif:hasIntegrityRecord
+    rdfs:subPropertyOf gaia:hasEvidenceIntegrityRecord .
+
+ofif:hasClassification
+    rdfs:subPropertyOf gaia:hasDataHandlingPolicyBinding .
