@@ -1,0 +1,82 @@
+{
+  "envelope_version": "v1",
+  "event_type": "ofif.asset_health.v1",
+  "event_id": "ofif-asset-health-demo-0001",
+  "observed_at": "2026-04-26T15:31:00Z",
+  "ingested_at": "2026-04-26T15:45:10Z",
+  "producer": {
+    "producer_type": "edge_model",
+    "producer_id": "demo-rail-scan-platform-001",
+    "software_version": "corridor-feature-detector-demo-0.1.0",
+    "hardware_model": "demo-corridor-lidar",
+    "tenant_id": "socioprophet-demo"
+  },
+  "provenance": {
+    "source_event_ids": ["gaia-nav-lidar-rail-demo-0001"],
+    "derivation": "derived",
+    "pipeline_step": "corridor_feature_detection",
+    "model_version_id": "corridor-feature-detector-demo-0.1.0"
+  },
+  "integrity": {
+    "content_hash": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+    "signature": "fixture-signature",
+    "attestation": "fixture-attestation",
+    "replay_nonce": "nonce-demo-asset-health-0001",
+    "sequence_number": 1
+  },
+  "classification": {
+    "data_class": "internal",
+    "retention_class": "standard",
+    "privacy_class": "none",
+    "handling_tags": ["demo", "asset-health", "rail", "lidar", "navigation"]
+  },
+  "adversarial": {
+    "threat_tags": [],
+    "confidence_impact": 0.0,
+    "detector_ids": ["corridor-feature-detector-demo"],
+    "notes": "Fixture event; no adversarial degradation applied."
+  },
+  "payload": {
+    "asset_id": "vegetation-encroachment-demo-001",
+    "asset_type": "CorridorVegetationFeature",
+    "health_state": "watch",
+    "confidence": 0.74,
+    "location": {
+      "h3_cell": "8928308280fffff",
+      "corridor_ref": "rail-corridor-demo-a",
+      "route_id": "demo-rail-line-a",
+      "from_measure": 12.4,
+      "to_measure": 13.1,
+      "unit": "km"
+    },
+    "measurements": [
+      {
+        "name": "min_clearance_m",
+        "value": 1.2,
+        "unit": "m",
+        "status": "watch"
+      },
+      {
+        "name": "distance_to_track_center_m",
+        "value": 2.1,
+        "unit": "m",
+        "status": "watch"
+      }
+    ],
+    "recommended_action": {
+      "action_type": "inspect",
+      "priority": "medium",
+      "notes": "Review corridor imagery or schedule inspection before operational restriction."
+    },
+    "link_state": {
+      "network_type": "trainborne-buffered-upload",
+      "latency_ms": 250,
+      "packet_loss": 0.0,
+      "is_partitioned": false
+    },
+    "custody_state": {
+      "tamper_flag": false,
+      "calibration_version": "cal-2026-04-demo"
+    }
+  }
+}
