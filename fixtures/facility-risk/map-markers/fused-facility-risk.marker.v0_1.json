@@ -1,0 +1,19 @@
+{
+  "schema_version": "0.1.0",
+  "marker_id": "orion-marker-facility-risk-fused-incident",
+  "event_ref": "orion-evt-facility-risk-fused-incident",
+  "layer_group": "fused_incident",
+  "coordinates": [-121.498, 38.58],
+  "title": "Fused facility-risk incident",
+  "severity": "critical",
+  "confidence": 0.78,
+  "evidence_grade": "fused.inferred",
+  "policy_state": "action_gated",
+  "source_count": 4,
+  "asset_refs": ["asset.synthetic-facility-alpha"],
+  "decision_card_ref": "orion-card-facility-risk-demo",
+  "receipt_ref": "orion-rcpt-facility-risk-demo",
+  "selectable": true,
+  "action_enabled": false,
+  "action_disabled_reason": "policy_state=action_gated"
+}
