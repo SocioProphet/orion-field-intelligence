@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.dev/orion/schemas/orion-policy-envelope.v0_1.schema.json",
+  "title": "OrionPolicyEnvelope v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "policy_envelope_id",
+    "policy_state",
+    "permissions",
+    "scope",
+    "receipt_required"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "0.1.0" },
+    "policy_envelope_id": { "type": "string", "pattern": "^orion-pol-[a-z0-9][a-z0-9._-]*$" },
+    "policy_state": {
+      "type": "string",
+      "enum": [
+        "public_view_allowed",
+        "internal_view_allowed",
+        "unverified_source",
+        "attribution_required",
+        "action_gated",
+        "scope_required",
+        "authorization_required",
+        "expired"
+      ]
+    },
+    "permissions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["view", "enrich", "export", "scan", "notify", "act"],
+      "properties": {
+        "view": { "type": "boolean" },
+        "enrich": { "type": "boolean" },
+        "export": { "type": "boolean" },
+        "scan": { "type": "boolean" },
+        "notify": { "type": "boolean" },
+        "act": { "type": "boolean" }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode"],
+      "properties": {
+        "mode": { "type": "string", "enum": ["fixture", "public_demo", "internal_workspace", "engagement_authorized", "unknown"] },
+        "workspace_ref": { "type": "string" },
+        "engagement_ref": { "type": "string" },
+        "authorization_ref": { "type": "string" },
+        "target_scope_ref": { "type": "string" }
+      }
+    },
+    "receipt_required": { "type": "boolean" },
+    "expires_at": { "type": "string", "format": "date-time" },
+    "notes": { "type": "string" }
+  }
+}
