@@ -1,0 +1,20 @@
+{
+  "schema_version": "0.1.0",
+  "event_id": "orion-evt-facility-risk-field-report",
+  "event_type": "field_report.operator_observation",
+  "title": "Operator field report confirms local disruption",
+  "summary": "Synthetic operator report indicates visible smoke, impaired access, and degraded local communications near the facility corridor.",
+  "observed_at": "2026-05-29T12:06:00Z",
+  "valid_until": "2026-05-29T15:06:00Z",
+  "location": {
+    "type": "Point",
+    "coordinates": [-121.4970, 38.5790]
+  },
+  "severity": "medium",
+  "confidence": 0.55,
+  "source_record_refs": ["gaia-src-facility-risk-field-report"],
+  "asset_refs": ["asset.synthetic-facility-alpha"],
+  "evidence_grade": "operator_report.unverified",
+  "policy_state": "unverified_source",
+  "tags": ["facility-risk", "field-report", "operator-report", "fixture"]
+}
