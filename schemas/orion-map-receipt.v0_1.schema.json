@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.dev/orion/schemas/orion-map-receipt.v0_1.schema.json",
+  "title": "OrionMapReceipt v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "receipt_id",
+    "receipt_type",
+    "created_at",
+    "event_ref",
+    "source_record_refs",
+    "policy_envelope_ref",
+    "decision_card_ref",
+    "mode"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "0.1.0" },
+    "receipt_id": { "type": "string", "pattern": "^orion-rcpt-[a-z0-9][a-z0-9._-]*$" },
+    "receipt_type": { "type": "string", "enum": ["render", "decision", "action_denied", "action_authorized", "synthetic_demo"] },
+    "created_at": { "type": "string", "format": "date-time" },
+    "event_ref": { "type": "string", "pattern": "^orion-evt-[a-z0-9][a-z0-9._-]*$" },
+    "source_record_refs": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^gaia-src-[a-z0-9][a-z0-9._-]*$" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "policy_envelope_ref": { "type": "string", "pattern": "^orion-pol-[a-z0-9][a-z0-9._-]*$" },
+    "decision_card_ref": { "type": "string", "pattern": "^orion-card-[a-z0-9][a-z0-9._-]*$" },
+    "mode": { "type": "string", "enum": ["fixture", "public_demo", "internal_workspace", "engagement_authorized"] },
+    "hashes": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "event_hash": { "type": "string" },
+        "decision_card_hash": { "type": "string" },
+        "source_bundle_hash": { "type": "string" },
+        "hash_algorithm": { "type": "string", "enum": ["sha256", "sha512", "none"] }
+      }
+    },
+    "operator_visible_summary": { "type": "string" },
+    "notes": { "type": "string" }
+  }
+}
