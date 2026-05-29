@@ -1,0 +1,45 @@
+{
+  "schema_version": "0.1.0",
+  "decision_card_id": "orion-card-facility-risk-demo",
+  "event_ref": "orion-evt-facility-risk-fused-incident",
+  "title": "Fused facility-risk incident",
+  "what_happened": "A synthetic facility asset is exposed to an elevated fire-weather corridor while a passive cyber exposure and operator field report increase operational concern.",
+  "why_we_believe_it": [
+    "The hazard fixture places a high-severity fire-weather alert near the facility corridor.",
+    "The asset fixture identifies a critical facility inside the affected area.",
+    "The cyber fixture records a passive CVE exposure against the facility vendor stack.",
+    "The field report fixture independently reports visible smoke, impaired access, and degraded local communications."
+  ],
+  "affected_assets": ["asset.synthetic-facility-alpha"],
+  "operational_risk": "Critical synthetic demo risk: continuity, access, and cyber resilience should be reviewed, but active scanning or external action is not authorized in fixture mode.",
+  "allowed_actions": [
+    "View fused incident on map",
+    "Inspect source records",
+    "Inspect policy envelope",
+    "Notify demo workspace stakeholders"
+  ],
+  "gated_actions": [
+    {
+      "action": "Run live scanner against facility infrastructure",
+      "required_gate": "engagement_policy_required"
+    },
+    {
+      "action": "Export incident as production evidence",
+      "required_gate": "human_review_required"
+    },
+    {
+      "action": "Execute operational mitigation",
+      "required_gate": "authorization_required"
+    }
+  ],
+  "source_record_refs": [
+    "gaia-src-facility-risk-fire-weather-alert",
+    "gaia-src-facility-risk-facility-asset",
+    "gaia-src-facility-risk-cve-exposure",
+    "gaia-src-facility-risk-field-report"
+  ],
+  "policy_envelope_ref": "orion-pol-facility-risk-demo",
+  "receipt_state": "emitted.synthetic",
+  "receipt_ref": "orion-rcpt-facility-risk-demo",
+  "notes": "First Orion decision-card fixture for OSIRIS excavation migration."
+}
