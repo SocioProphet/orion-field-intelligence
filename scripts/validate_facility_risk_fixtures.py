@@ -8,6 +8,9 @@ Does not import or run code from mdheller/osiris.
 from __future__ import annotations
 
 import json
+import subprocess
+import sys
+import tempfile
 from pathlib import Path
 from typing import Any, Dict, Iterable
 
@@ -24,6 +27,7 @@ REQUIRED_FILES = [
     "fusion-links/facility-risk-demo.fusion.v0_1.json",
     "decision-cards/facility-risk-demo.card.v0_1.json",
     "receipts/facility-risk-demo.receipt.v0_1.json",
+    "map-markers/fused-facility-risk.marker.v0_1.json",
 ]
 
 
@@ -44,7 +48,7 @@ def load_json(path: Path) -> Dict[str, Any]:
     return value
 
 
-def check_required(path: Path, doc: Dict[str, Any], required: Iterable[str]) -> None:
+def check_required(path: Path | str, doc: Dict[str, Any], required: Iterable[str]) -> None:
     missing = [field for field in required if field not in doc]
     if missing:
         fail(f"{path} missing required fields: {', '.join(missing)}")
@@ -73,6 +77,45 @@ def assert_refs(path_label: str, refs: Iterable[str], table: Dict[str, Dict[str,
             fail(f"{path_label} references missing {kind}: {ref}")
 
 
+def check_marker(marker_id: str, marker: Dict[str, Any], events: Dict[str, Dict[str, Any]]) -> None:
+    check_required(
+        marker_id,
+        marker,
+        [
+            "event_ref",
+            "layer_group",
+            "coordinates",
+            "title",
+            "severity",
+            "confidence",
+            "evidence_grade",
+            "policy_state",
+            "source_count",
+            "selectable",
+            "action_enabled",
+        ],
+    )
+    assert_refs(marker_id, [marker["event_ref"]], events, "event")
+    event = events[marker["event_ref"]]
+    if marker["coordinates"] != event["location"]["coordinates"]:
+        fail(f"{marker_id} coordinates must match event location")
+    if marker["severity"] != event["severity"]:
+        fail(f"{marker_id} severity must match event severity")
+    if marker["confidence"] != event["confidence"]:
+        fail(f"{marker_id} confidence must match event confidence")
+    if marker["evidence_grade"] != event["evidence_grade"]:
+        fail(f"{marker_id} evidence_grade must match event evidence_grade")
+    if marker["policy_state"] != event["policy_state"]:
+        fail(f"{marker_id} policy_state must match event policy_state")
+    if marker["source_count"] != len(event["source_record_refs"]):
+        fail(f"{marker_id} source_count must match event source_record_refs length")
+    if event["policy_state"] in {"action_gated", "scope_required", "authorization_required", "expired"}:
+        if marker["action_enabled"] is not False:
+            fail(f"{marker_id} must disable action for gated policy_state")
+        if "action_disabled_reason" not in marker:
+            fail(f"{marker_id} must include action_disabled_reason for gated policy_state")
+
+
 def main() -> int:
     for rel in REQUIRED_FILES:
         if not (FIXTURE_ROOT / rel).exists():
@@ -83,12 +126,13 @@ def main() -> int:
     fusions = load_group("fusion-links", "fusion_link_id")
     cards = load_group("decision-cards", "decision_card_id")
     receipts = load_group("receipts", "receipt_id")
+    markers = load_group("map-markers", "marker_id")
 
     source_refs_seen = set()
 
     for event_id, event in events.items():
         check_required(
-            Path(event_id),
+            event_id,
             event,
             ["event_type", "observed_at", "location", "severity", "confidence", "source_record_refs", "evidence_grade", "policy_state"],
         )
@@ -135,6 +179,9 @@ def main() -> int:
         assert_refs(receipt_id, [receipt["decision_card_ref"]], cards, "decision card")
         source_refs_seen.update(receipt["source_record_refs"])
 
+    for marker_id, marker in markers.items():
+        check_marker(marker_id, marker, events)
+
     fused = events.get("orion-evt-facility-risk-fused-incident")
     if not fused:
         fail("missing fused facility-risk incident")
@@ -153,10 +200,25 @@ def main() -> int:
     if missing_gaia_refs:
         fail(f"facility-risk chain missing Gaia source refs: {', '.join(missing_gaia_refs)}")
 
+    generated_marker_path = Path(tempfile.gettempdir()) / "orion-generated-facility-risk-marker.json"
+    subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts" / "orion_event_to_marker.py"),
+            str(FIXTURE_ROOT / "observation-events" / "fused-facility-risk.event.v0_1.json"),
+            str(generated_marker_path),
+        ],
+        check=True,
+    )
+    generated_marker = load_json(generated_marker_path)
+    expected_marker = markers["orion-marker-facility-risk-fused-incident"]
+    if generated_marker != expected_marker:
+        fail("generated fused-facility-risk marker does not match committed marker fixture")
+
     print(
         "validated Orion facility-risk fixtures: "
         f"events={len(events)} policies={len(policies)} fusions={len(fusions)} "
-        f"cards={len(cards)} receipts={len(receipts)} source_refs={len(source_refs_seen)}"
+        f"cards={len(cards)} receipts={len(receipts)} markers={len(markers)} source_refs={len(source_refs_seen)}"
     )
     return 0
 
