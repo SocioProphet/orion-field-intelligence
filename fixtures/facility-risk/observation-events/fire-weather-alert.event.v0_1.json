@@ -1,0 +1,19 @@
+{
+  "schema_version": "0.1.0",
+  "event_id": "orion-evt-facility-risk-fire-weather-alert",
+  "event_type": "natural_hazard.fire_weather_alert",
+  "title": "Fire-weather alert near facility corridor",
+  "summary": "Synthetic fire-weather conditions indicate elevated operational risk near the facility corridor.",
+  "observed_at": "2026-05-29T12:00:00Z",
+  "valid_until": "2026-05-29T18:00:00Z",
+  "location": {
+    "type": "Point",
+    "coordinates": [-121.4944, 38.5816]
+  },
+  "severity": "high",
+  "confidence": 0.7,
+  "source_record_refs": ["gaia-src-facility-risk-fire-weather-alert"],
+  "evidence_grade": "fixture.synthetic",
+  "policy_state": "public_view_allowed",
+  "tags": ["facility-risk", "natural-hazard", "fixture"]
+}
