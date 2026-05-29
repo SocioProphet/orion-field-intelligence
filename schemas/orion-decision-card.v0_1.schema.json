@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.dev/orion/schemas/orion-decision-card.v0_1.schema.json",
+  "title": "OrionDecisionCard v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "decision_card_id",
+    "event_ref",
+    "title",
+    "what_happened",
+    "why_we_believe_it",
+    "affected_assets",
+    "allowed_actions",
+    "gated_actions",
+    "source_record_refs",
+    "policy_envelope_ref",
+    "receipt_state"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "0.1.0" },
+    "decision_card_id": { "type": "string", "pattern": "^orion-card-[a-z0-9][a-z0-9._-]*$" },
+    "event_ref": { "type": "string", "pattern": "^orion-evt-[a-z0-9][a-z0-9._-]*$" },
+    "title": { "type": "string", "minLength": 1 },
+    "what_happened": { "type": "string", "minLength": 1 },
+    "why_we_believe_it": { "type": "array", "items": { "type": "string", "minLength": 1 }, "minItems": 1 },
+    "affected_assets": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "operational_risk": { "type": "string" },
+    "allowed_actions": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "gated_actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["action", "required_gate"],
+        "properties": {
+          "action": { "type": "string" },
+          "required_gate": {
+            "type": "string",
+            "enum": ["scope_required", "authorization_required", "engagement_policy_required", "attribution_required", "human_review_required"]
+          }
+        }
+      }
+    },
+    "source_record_refs": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^gaia-src-[a-z0-9][a-z0-9._-]*$" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "policy_envelope_ref": { "type": "string", "pattern": "^orion-pol-[a-z0-9][a-z0-9._-]*$" },
+    "receipt_state": { "type": "string", "enum": ["none", "render_receipt_ready", "decision_receipt_ready", "emitted.synthetic", "emitted.live"] },
+    "receipt_ref": { "type": "string", "pattern": "^orion-rcpt-[a-z0-9][a-z0-9._-]*$" },
+    "notes": { "type": "string" }
+  }
+}
